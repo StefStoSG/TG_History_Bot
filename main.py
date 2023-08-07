@@ -1,6 +1,6 @@
 from typing import Final
 from telegram import Update
-from telegram.ext import Application,Commandhandler, Messagehandler, filters, ContextTypes
+from telegram.ext import Application,CommandHandler, MessageHandler, filters, ContextTypes
 
 
 TOKEN: Final = '6061907199:AAH8ciYkbkAKW0hfu28XMPUZPkVKkvo2HGo'
@@ -8,13 +8,13 @@ BOT_USERNAME: Final = '@sghistorybot'
 
 # Commands
 
-async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPES):
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Hello! Thank you for using this bot. This bot is made by @sghistorybot. To use this bot, just send me a message and I will reply you with the history of Bulgaria!')
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPES):
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('I am a historian bot prease send me a message and I will reply you with some history fact of Bulgaria!')
     
-async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPES):
+async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('This is a custom comand!')
 
 # Responses
@@ -49,7 +49,7 @@ def handle_response(text: str) -> str:
     
     return 'I do not understand you!'
 
-async def hadle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type: str = update.message.chat.type
     text: str = update.message.text
     
@@ -71,6 +71,7 @@ async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f'Update {update} caused error {context.error}')
 
 if __name__ == '__main__':
+    print('Starting bot ...')
     app = Application.builder().token(TOKEN).build()
     
     # Commands
@@ -79,7 +80,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('custom', custom_command))
     
     # Messages
-    app.add_handler(MessageHandler(filters.Filters.text, handle_message))
+    app.add_handler(MessageHandler(filters.TEXT, handle_message))
     
     # Errors
     app.add_error_handler(error)
